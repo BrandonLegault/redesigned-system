@@ -19,16 +19,12 @@
 
 class Players
 {
-
-    private $playersArray;
-
+    private $dataSource;
     private $playerJsonString;
 
-    public function __construct()
+    public function __construct($dataSource)
     {
-        //We're only using this if we're storing players as an array.
-        $this->playersArray = [];
-
+        $this->dataSource = $dataSource;
         //We'll only use this one if we're storing players as a JSON string
         $this->playerJsonString = null;
     }
@@ -43,9 +39,6 @@ class Players
         $playerData = null;
 
         switch ($source) {
-            case 'array':
-                $playerData = $this->getPlayerDataArray();
-                break;
             case 'json':
                 $playerData = $this->getPlayerDataJson();
                 break;
@@ -69,9 +62,6 @@ class Players
     function writePlayer($source, $player, $filename = null)
     {
         switch ($source) {
-            case 'array':
-                $this->playersArray[] = $player;
-                break;
             case 'json':
                 $players = [];
                 if ($this->playerJsonString) {
@@ -91,43 +81,6 @@ class Players
         }
     }
 
-
-    function getPlayerDataArray()
-    {
-
-        $players = [];
-
-        $jonas = new \stdClass();
-        $jonas->name = 'Jonas Valenciunas';
-        $jonas->age = 26;
-        $jonas->job = 'Center';
-        $jonas->salary = '4.66m';
-        $players[] = $jonas;
-
-        $kyle = new \stdClass();
-        $kyle->name = 'Kyle Lowry';
-        $kyle->age = 32;
-        $kyle->job = 'Point Guard';
-        $kyle->salary = '28.7m';
-        $players[] = $kyle;
-
-        $demar = new \stdClass();
-        $demar->name = 'Demar DeRozan';
-        $demar->age = 28;
-        $demar->job = 'Shooting Guard';
-        $demar->salary = '26.54m';
-        $players[] = $demar;
-
-        $jakob = new \stdClass();
-        $jakob->name = 'Jakob Poeltl';
-        $jakob->age = 22;
-        $jakob->job = 'Center';
-        $jakob->salary = '2.704m';
-        $players[] = $jakob;
-
-        return $players;
-    }
-
     function getPlayerDataJson()
     {
         $json = '[{"name":"Jonas Valenciunas","age":26,"job":"Center","salary":"4.66m"},{"name":"Kyle Lowry","age":32,"job":"Point Guard","salary":"28.7m"},{"name":"Demar DeRozan","age":28,"job":"Shooting Guard","salary":"26.54m"},{"name":"Jakob Poeltl","age":22,"job":"Center","salary":"2.704m"}]';
@@ -142,8 +95,7 @@ class Players
 
     function display(IFormatter $formatter)
     {
-        // TODO Get players from source
-        $players = $this->getPlayerDataArray();
+        $players = $this->dataSource->read();
         echo $formatter->output($players);
     }
 }
