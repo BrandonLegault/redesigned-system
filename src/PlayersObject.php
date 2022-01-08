@@ -18,19 +18,22 @@
 */
 
 
-interface IReadWritePlayers {
+interface IReadWritePlayers
+{
     function readPlayers($source, $filename = null);
     function writePlayer($source, $player, $filename = null);
     function display($isCLI, $course, $filename = null);
 }
 
-class PlayersObject implements IReadWritePlayers {
+class PlayersObject implements IReadWritePlayers
+{
 
     private $playersArray;
 
     private $playerJsonString;
 
-    public function __construct() {
+    public function __construct()
+    {
         //We're only using this if we're storing players as an array.
         $this->playersArray = [];
 
@@ -43,7 +46,8 @@ class PlayersObject implements IReadWritePlayers {
      * @param $filename string Only used if we're reading players in 'file' mode.
      * @return string json
      */
-    function readPlayers($source, $filename = null) {
+    function readPlayers($source, $filename = null)
+    {
         $playerData = null;
 
         switch ($source) {
@@ -63,7 +67,6 @@ class PlayersObject implements IReadWritePlayers {
         }
 
         return $playerData;
-
     }
 
     /**
@@ -71,7 +74,8 @@ class PlayersObject implements IReadWritePlayers {
      * @param $filename string Only used if we're writing in 'file' mode
      * @param $player \stdClass Class implementation of the player with name, age, job, salary.
      */
-    function writePlayer($source, $player, $filename = null) {
+    function writePlayer($source, $player, $filename = null)
+    {
         switch ($source) {
             case 'array':
                 $this->playersArray[] = $player;
@@ -96,7 +100,8 @@ class PlayersObject implements IReadWritePlayers {
     }
 
 
-    function getPlayerDataArray() {
+    function getPlayerDataArray()
+    {
 
         $players = [];
 
@@ -129,20 +134,22 @@ class PlayersObject implements IReadWritePlayers {
         $players[] = $jakob;
 
         return $players;
-
     }
 
-    function getPlayerDataJson() {
+    function getPlayerDataJson()
+    {
         $json = '[{"name":"Jonas Valenciunas","age":26,"job":"Center","salary":"4.66m"},{"name":"Kyle Lowry","age":32,"job":"Point Guard","salary":"28.7m"},{"name":"Demar DeRozan","age":28,"job":"Shooting Guard","salary":"26.54m"},{"name":"Jakob Poeltl","age":22,"job":"Center","salary":"2.704m"}]';
         return $json;
     }
 
-    function getPlayerDataFromFile($filename) {
+    function getPlayerDataFromFile($filename)
+    {
         $file = file_get_contents($filename);
         return $file;
     }
 
-    function display($isCLI, $source, $filename = null) {
+    function display($isCLI, $source, $filename = null)
+    {
 
         $players = $this->readPlayers($source, $filename);
 
@@ -157,41 +164,44 @@ class PlayersObject implements IReadWritePlayers {
             }
         } else {
 
-            ?>
+?>
             <!DOCTYPE html>
             <html>
+
             <head>
                 <style>
                     li {
                         list-style-type: none;
                         margin-bottom: 1em;
                     }
+
                     span {
                         display: block;
                     }
                 </style>
             </head>
+
             <body>
-            <div>
-                <span class="title">Current Players</span>
-                <ul>
-                    <?php foreach($players as $player) { ?>
-                        <li>
-                            <div>
-                                <span class="player-name">Name: <?= $player->name ?></span>
-                                <span class="player-age">Age: <?= $player->age ?></span>
-                                <span class="player-salary">Salary: <?= $player->salary ?></span>
-                                <span class="player-job">Job: <?= $player->job ?></span>
-                            </div>
-                        </li>
-                    <?php } ?>
-                </ul>
+                <div>
+                    <span class="title">Current Players</span>
+                    <ul>
+                        <?php foreach ($players as $player) { ?>
+                            <li>
+                                <div>
+                                    <span class="player-name">Name: <?= $player->name ?></span>
+                                    <span class="player-age">Age: <?= $player->age ?></span>
+                                    <span class="player-salary">Salary: <?= $player->salary ?></span>
+                                    <span class="player-job">Job: <?= $player->job ?></span>
+                                </div>
+                            </li>
+                        <?php } ?>
+                    </ul>
             </body>
+
             </html>
-            <?php
+<?php
         }
     }
-
 }
 
 ?>
