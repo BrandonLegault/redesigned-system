@@ -25,7 +25,7 @@ interface IReadWritePlayers
     function display($isCLI, $course, $filename = null);
 }
 
-class PlayersObject implements IReadWritePlayers
+class Players implements IReadWritePlayers
 {
 
     private $playersArray;
