@@ -6,7 +6,7 @@ class HtmlFormatter implements IFormatter
    {
       $players_list = "";
       foreach ($players as $player) {
-         $players_list = <<<HTML
+         $players_list .= <<<HTML
          <li>
             <div>
                <span class="player-name">Name: $player->name</span>
