@@ -21,7 +21,7 @@ class Players
 {
     private $dataSource;
 
-    public function __construct($dataSource)
+    public function __construct(ISource $dataSource)
     {
         $this->dataSource = $dataSource;
     }
