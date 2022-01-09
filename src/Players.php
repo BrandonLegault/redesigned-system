@@ -20,13 +20,10 @@
 class Players
 {
     private $dataSource;
-    private $playerJsonString;
 
     public function __construct($dataSource)
     {
         $this->dataSource = $dataSource;
-        //We'll only use this one if we're storing players as a JSON string
-        $this->playerJsonString = null;
     }
 
     /**
@@ -39,9 +36,6 @@ class Players
         $playerData = null;
 
         switch ($source) {
-            case 'json':
-                $playerData = $this->getPlayerDataJson();
-                break;
             case 'file':
                 $playerData = $this->getPlayerDataFromFile($filename);
                 break;
@@ -62,14 +56,6 @@ class Players
     function writePlayer($source, $player, $filename = null)
     {
         switch ($source) {
-            case 'json':
-                $players = [];
-                if ($this->playerJsonString) {
-                    $players = json_decode($this->playerJsonString);
-                }
-                $players[] = $player;
-                $this->playerJsonString = json_encode($player);
-                break;
             case 'file':
                 $players = json_decode($this->getPlayerDataFromFile($filename));
                 if (!$players) {
@@ -79,12 +65,6 @@ class Players
                 file_put_contents($filename, json_encode($players));
                 break;
         }
-    }
-
-    function getPlayerDataJson()
-    {
-        $json = '[{"name":"Jonas Valenciunas","age":26,"job":"Center","salary":"4.66m"},{"name":"Kyle Lowry","age":32,"job":"Point Guard","salary":"28.7m"},{"name":"Demar DeRozan","age":28,"job":"Shooting Guard","salary":"26.54m"},{"name":"Jakob Poeltl","age":22,"job":"Center","salary":"2.704m"}]';
-        return $json;
     }
 
     function getPlayerDataFromFile($filename)
